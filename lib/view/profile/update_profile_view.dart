@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:mvvm/res/colors.dart';
 import 'package:mvvm/res/components/round_button.dart';
 import 'package:mvvm/res/image_strings.dart';
 import 'package:mvvm/res/sizes.dart';
@@ -8,14 +10,14 @@ import 'package:mvvm/utils/utils.dart';
 import 'package:mvvm/view_model/auth_view_model.dart';
 import 'package:provider/provider.dart';
 
-class SignUpView extends StatefulWidget {
-  const SignUpView({Key? key}) : super(key: key);
+class UpdateProfileView extends StatefulWidget {
+  const UpdateProfileView({Key? key}) : super(key: key);
 
   @override
-  State<SignUpView> createState() => _SignUpViewState();
+  State<UpdateProfileView> createState() => _UpdateProfileViewState();
 }
 
-class _SignUpViewState extends State<SignUpView> {
+class _UpdateProfileViewState extends State<UpdateProfileView> {
   ValueNotifier<bool> _obsecurePassword = ValueNotifier<bool>(true);
   TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -48,18 +50,56 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final size = MediaQuery.of(context).size;
+    var isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: (){},
+            icon: const Icon(LineAwesomeIcons.angle_left),
+          ),
+          title: Text(editProfile, style: Theme.of(context).textTheme.headlineSmall,),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          actions: [
+            IconButton(
+                onPressed: (){},
+                icon: Icon(isDark ? LineAwesomeIcons.sun :  LineAwesomeIcons.moon)
+            )
+          ],
+        ),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(tDefaultSize),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image(image:AssetImage(welcomeTop), height: size.height * 0.12,),
-                Text(signUpTitle, style: Theme.of(context).textTheme.headlineLarge,),
-                Text(signUpSubtitle, style: Theme.of(context).textTheme.titleMedium,),
-                SizedBox(height: tFormHeightSize-20,),
+                Stack(
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 120,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image(image:AssetImage(userProfileImage))),
+                    ),
+                    Positioned(
+                      bottom: 5,
+                      right: 0,
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: AppColors.tPrimaryColor,
+                        ),
+                        child: const Icon(LineAwesomeIcons.camera, size:20.0, color: Colors.black,),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: tFormHeightSize,),
                 TextFormField(
                   controller: _nameController,
                   keyboardType: TextInputType.text,
@@ -131,56 +171,49 @@ class _SignUpViewState extends State<SignUpView> {
 
                     }
                 ),
-                SizedBox(height: tFormHeightSize-20,),
-                /*Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                      onPressed: (){
-                        Navigator.pushNamed(context, RoutesName.signup);
-                      },
-                      child: Text(forgotPassword)
-                  ),
-                ),*/
-                SizedBox(height: tFormHeightSize-20,),
+                SizedBox(height: tFormHeightSize,),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: (){},
-                    child: Text(signUp.toUpperCase()),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.tPrimaryColor,
+                      side: BorderSide.none,
+                    ),
+                    child: Text(editProfile.toUpperCase(), style: TextStyle(color: AppColors.tDarkColor),),
                   ),
                 ),
-                SizedBox(height: size.height*0.02,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                SizedBox(height: tFormHeightSize,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(or),
-                    SizedBox(height: size.height*0.02,),
-                    SizedBox(
-                      width: double.infinity,
-                      child: OutlinedButton.icon(
-                        icon: Image(
-                          image:AssetImage(googleLogoImage),
-                          width: 20.0,
-                        ),
-                        onPressed: (){},
-                        label: Text(googleAccount.toUpperCase()),
+                    Text.rich(
+                      TextSpan(
+                        text: joined,
+                        style: TextStyle(fontSize: 12),
+                        children: [
+                          TextSpan(
+                            text: joinedAt,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12
+                            ),
+                          )
+                        ]
                       ),
                     ),
-                    SizedBox(height: size.height*0.01,),
-                    TextButton(onPressed: (){
-                      Navigator.pushNamed(context, RoutesName.login);
-                    },child: Text.rich(
-                      TextSpan(
-                          text: alreadyHaveAnAccount,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          children: [
-                            TextSpan(text: login, style: TextStyle(color: Colors.blue)
-                            )
-                          ]
-                      ),)
-                    )
+                    ElevatedButton(
+                        onPressed: (){}, 
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent.withOpacity(0.1),
+                          elevation: 0,
+                          foregroundColor: Colors.red,
+                          shape: const StadiumBorder(),
+                          side: BorderSide.none,
+                        ),
+                        child: Text(delete))
                   ],
-                )
+                ),
               ],
             ),
           ),
