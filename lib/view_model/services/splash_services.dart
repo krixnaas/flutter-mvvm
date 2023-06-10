@@ -6,16 +6,18 @@ import 'package:mvvm/view_model/user_view_model.dart';
 
 class SplashServices{
   Future<UserModel> getUserData() => UserViewModel().getUser();
+  Future<bool> startAnimate() async{
+    return true;
+  }
   void checkAuthentication(BuildContext context) async{
+    await Future.delayed(Duration(milliseconds: 4000)); // Wait for animation to complete
     getUserData().then((value){
       print(value.token);
       if(value.token == null || value.token == '' || value.token == 'null')
       {
-        Future.delayed(Duration(seconds: 3));
-        Navigator.pushNamed(context, RoutesName.login);
+        Navigator.pushNamed(context, RoutesName.welcome);
       }else{
-        Future.delayed(Duration(seconds: 3));
-        Navigator.pushNamed(context, RoutesName.home);
+        Navigator.pushNamed(context, RoutesName.welcome);
       }
     }).onError((error, stackTrace) {
       if(kDebugMode){
