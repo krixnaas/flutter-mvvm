@@ -23,7 +23,14 @@ class _ProfileViewState extends State<ProfileView> {
     var isDarkMode = MediaQuery.of(context).platformBrightness == Brightness.dark;
     final txtTheme = Theme.of(context).textTheme;
     return Scaffold(
-      appBar: buildAppBar(profile,isDarkMode, txtTheme, context),
+      appBar: AppBar(
+        backgroundColor: isDarkMode ? Colors.transparent : AppColors.whiteColor,
+        title: Text("Profile", style: txtTheme.titleLarge,),
+        iconTheme: IconThemeData(
+          color: isDarkMode ? Colors.white : Colors.black,
+        ),
+        elevation: 1,
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(tDefaultSize),

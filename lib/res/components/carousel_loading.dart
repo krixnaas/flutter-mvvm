@@ -17,7 +17,7 @@ class CarouselLoading extends StatelessWidget {
           return Container(
             width: double.infinity,
             height: 200,
-            color: Colors.white,
+            color: Colors.grey,
           );
         },
         options: CarouselOptions(

@@ -11,4 +11,7 @@ class RoutesName{
   static const String dashboard = "dashboard_view";
   static const String profile = "profile_view";
   static const String update_profile = "update_profile_view";
+  static const String service_list = "service_list_view";
+  static const String service_detail = "service_detail_view";
+  static const String user_post = "user_post_view";
 }

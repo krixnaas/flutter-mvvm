@@ -85,3 +85,19 @@ const String menu4 = "User Management";
 const String delete = "Delete";
 const String joined = "Joined";
 const String joinedAt = " 31 October 2023";
+
+// -- Service List
+const String serviceTitle = "Business Directory";
+
+// -- User Post
+const String adAppHeader = "Post Your Ad";
+const String adsubHeader = "Stand Out from the Crowd";
+const String adTitle = "Title";
+const String adState = "State";
+const String adCategories = "Categories";
+const String adType1 = "Offer";
+const String adType2 = "Wanted";
+const String adDescription = "Description in 150 Words";
+const String adRemaingWordCount = "Remaining Word Count: ";
+const String adPhoneToggle = "I don\'t want to receive phone call.";
+const String adSubmit = "Post";

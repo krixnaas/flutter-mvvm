@@ -108,7 +108,24 @@ class _LoginViewState extends State<LoginView> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: (){
-                    Navigator.pushNamed(context, RoutesName.dashboard);
+                    Map data = {
+                      //'email' : _emailController.text.toString(),
+                      //'password' : _passwordController.text.toString(),
+                      'email' :'krixna@gmail.com',
+                      'password':'123456'
+                    };
+                    print('api hit');
+                    authViewModel.loginApi(data, context);
+
+                    /*if(_emailController.text.isEmpty){
+                      Utils.flushBarErrorMessage('Please enter email', context);
+                    }else if(_passwordController.text.isEmpty){
+                      Utils.flushBarErrorMessage('Please enter password', context);
+                    }else if(_passwordController.text.length < 6){
+                      Utils.flushBarErrorMessage('Please enter 6 digit password', context);
+                    }else {
+
+                    }*/
                   },
                   child: Text(login.toUpperCase()),
                 ),
