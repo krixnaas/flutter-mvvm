@@ -54,6 +54,9 @@ dependencies:
   carousel_slider: ^4.2.1
   toggle_switch: ^2.1.0
   animated_toggle_switch: ^0.6.2
+  flutter_sticky_widgets: ^0.0.3
+  sliver_tools: ^0.2.10
+  simple_animations: ^5.0.1
 
 dev_dependencies:
   flutter_test:

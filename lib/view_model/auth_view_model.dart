@@ -19,22 +19,19 @@ class AuthViewModel with ChangeNotifier {
     setLoading(true);
     _myRepo.loginApi(data).then((value) {
       setLoading(false);
+      final userModel = UserModel.fromJson(value);
       final userPreferences = Provider.of<UserViewModel>(context, listen:false);
-      userPreferences.saveUser(
-        UserModel(
-          token: value['token'].toString()
-        )
-      );
-      Utils.flushBarErrorMessage('Login Successful', context);
-      Navigator.pushNamed(context, RoutesName.home);
+      userPreferences.saveUser(userModel);
       if (kDebugMode) {
         print(value.toString());
       }
+      Utils.flushBarErrorMessage('Login Successful', context);
+      Navigator.pushNamed(context, RoutesName.dashboard);
     }).onError((error, stackTrace) {
       setLoading(false);
       if (kDebugMode) {
-        Utils.flushBarErrorMessage(error.toString(), context);
         print(error.toString());
+        Utils.flushBarErrorMessage(error.toString(), context);
       }
     });
   }

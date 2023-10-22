@@ -22,4 +22,7 @@ class AppColors {
   static const onBoardingPage3Color = Color(0xFFFFDCBD);
   static const onBoardingPage4Color = Color(0xFFFDDCBC);
 
+  // -- App Page Background
+  static const AppPageBackgroundColor = Color(0xfff8f4f4);
+
 }

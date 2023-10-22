@@ -6,6 +6,9 @@ import 'package:mvvm/data/response/status.dart';
 import 'package:mvvm/res/colors.dart';
 import 'package:mvvm/res/components/app_bar_widget.dart';
 import 'package:mvvm/res/components/carousel_loading.dart';
+import 'package:mvvm/res/components/home_categories.dart';
+import 'package:mvvm/res/components/single_item.dart';
+import 'package:mvvm/res/components/sliver_spacer.dart';
 import 'package:mvvm/res/image_strings.dart';
 import 'package:mvvm/utils/routes/routes_name.dart';
 import 'package:mvvm/utils/utils.dart';
@@ -13,6 +16,7 @@ import 'package:mvvm/view_model/home_view_model.dart';
 import 'package:mvvm/view_model/user_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class HomeView extends StatefulWidget {
@@ -24,12 +28,37 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   HomeViewModel homeViewModel = HomeViewModel();
+  ScrollController _scrollController = ScrollController();
+
+  List<Map> categoriesList = [
+    {'name': 'Room', 'iconPath': 'images/cat.png'},
+    {'name': 'Job', 'iconPath': 'images/dog.png'},
+    {'name': 'Event', 'iconPath': 'images/rabbit.png'},
+    {'name': 'Patro', 'iconPath': 'images/parrot.png'},
+    {'name': 'L&F', 'iconPath': 'images/horse.png'}
+  ];
+
   @override
   void initState() {
-    // TODO: implement initState
     homeViewModel.fetchBannerListApi();
+    homeViewModel.loadMoreItems();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      // Reached the bottom of the scroll view, load more items
+      homeViewModel.loadMoreItems();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final userPrefrence = Provider.of<UserViewModel>(context);
@@ -37,116 +66,116 @@ class _HomeViewState extends State<HomeView> {
     final txtTheme = Theme.of(context).textTheme;
     return Scaffold(
         appBar: buildAppBar("Home",isDarkMode, txtTheme, context),
+        backgroundColor: AppColors.AppPageBackgroundColor,
         body: ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeViewModel,
-        child: Column(
-          children: [
-            Consumer<HomeViewModel>(builder: (context, value, child){
-              switch(value.bannerList.status){
-                case Status.LOADING:
-                  return CarouselLoading();
-                case Status.ERROR:
-                  return Center(child: Text(value.bannerList.message.toString()));
-                case Status.COMPLETED:
-                  return Container(
-                          child: CarouselSlider.builder(
-                            itemCount: value.bannerList.data!.movies!.length,
-                            itemBuilder: (context, index, _) {
-                            return Container(
-                               child: ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(10)), // Same border radius value as the container
-                                child: Image.network(
-                                  value.bannerList.data!.movies![index].url!.toString(),
-                                  fit: BoxFit.cover,
-                                  width: 380,
-                                ),
+        child: CustomScrollView(
+          slivers: [
+            SliverSpacer(height: 10,),
+            SliverToBoxAdapter(
+              child:  Consumer<HomeViewModel>(builder: (context, value, child){
+                print(value.bannerList);
+                switch(value.bannerList.status){
+                  case Status.LOADING:
+                    return CarouselLoading();
+                  case Status.ERROR:
+                    return Center(child: Text(value.bannerList.message.toString()));
+                  case Status.COMPLETED:
+                    return Container(
+                      child: CarouselSlider.builder(
+                        itemCount: value.bannerList.data!.data!.length,
+                        itemBuilder: (context, index, _) {
+                          return Container(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(Radius.circular(10)), // Same border radius value as the container
+                              child: Image.network(
+                                value.bannerList.data!.data![index].url!.toString(),
+                                fit: BoxFit.cover,
+                                width: 380,
                               ),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                              ),
-
-                            );
-                            },
-                            options: CarouselOptions(
-                              height: 200,
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              aspectRatio: 16 / 9,
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              enableInfiniteScroll: true,
-                              autoPlayAnimationDuration: Duration(milliseconds: 800),
-                              viewportFraction: 1,
-                          ),
-                    ),
-
-                  );
-
-                    /*ListView.builder(
-                      itemCount: value.moviesList.data!.response!.length,
-                      itemBuilder: (context,index){
-                        return Card(
-                          child: ListTile(
-                            leading: Image.network(
-                              value.moviesList.data!.response![index].images![0].url.toString(),
-                              errorBuilder: (context, error, stack){
-                                return Icon(Icons.error, color: Colors.red,);
-                              },
-                              height: 40,
-                              width: 40,
-                              fit: BoxFit.cover,
                             ),
-                            title: Text(value.moviesList.data!.response![index].name.toString()),
-                            subtitle: Text(value.moviesList.data!.response![index].contentCount.toString()),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.star , color: Colors.yellow,)
-                              ],
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
                             ),
-                          ),
-                        );
-                      });*/
 
-              }
-              return Container();
-            },
-            ),
-            SizedBox(height: 10,),
-            Consumer<HomeViewModel>(
-              builder: (context, viewModel, child) {
-                return AnimatedToggleSwitch<int>.rollingByHeight(
-                  current: viewModel.selectedIndex,
-                  values: const [0, 1],
-                  onChanged: (value) {
-                    viewModel.setIndex(value);
-                  },
-                  borderRadius: BorderRadius.circular(75.0),
-                  indicatorSize: const Size.square(1.5),
-                  borderWidth: 5,
-                  customIconBuilder: (context, local, global) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('${local.value}'),
-                      ],
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 200,
+                          autoPlay: true,
+                          enlargeCenterPage: true,
+                          aspectRatio: 16 / 9,
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: true,
+                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          viewportFraction: 0.9,
+                        ),
+                      ),
+
                     );
-                  },
 
-                );
-
+                }
+                return Container();
               },
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'AnimatedToggleSwitch.size with some custom settings:',
-                textAlign: TextAlign.center,
               ),
+            ),
+            SliverSpacer(height: 20,),
+            SliverPinnedHeader(
+              child: Container(
+                height: 100,
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: AppColors.AppPageBackgroundColor,
+                ),
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categoriesList.length,
+                  itemBuilder: (context,index){
+                    return Categories(title: categoriesList[index]['name']);
+                  },
+                ),
+              ),
+            ),
+            SliverSpacer(height: 20,),
+            Consumer<HomeViewModel>(
+              builder: (context, value, child) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                      if (index < value.items.length) {
+                        // Display the item
+                        final item = value.items[index];
+                        return SingleItem(
+                          title: "Something",
+                          time: "32 min ago a",
+                          isFav: false,
+                          state: "NSW",
+                          description: "Something Long",
+                          phone: "0450102131",
+                          message: "0450102131",
+                        );
+                      } else {
+                        // Reached the end of the list, show a loading indicator
+                        if (value.isLoading && value.items.isNotEmpty) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          // Reached the end of the list and no more items to load
+                          return Container();
+                        }
+                      }
+                    },
+                    childCount: value.items.length + 1, // +1 for the loading indicator
+                  ),
+                );
+              },
             ),
           ],
         ),
       )
     );
   }
+
 }

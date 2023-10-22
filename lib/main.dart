@@ -9,6 +9,8 @@ import 'package:mvvm/view_model/dashboard_view_model.dart';
 import 'package:mvvm/view_model/forgot_password_view_model.dart';
 import 'package:mvvm/view_model/home_view_model.dart';
 import 'package:mvvm/view_model/profile_view_model.dart';
+import 'package:mvvm/view_model/service_list_view_model.dart';
+import 'package:mvvm/view_model/user_post_view_model.dart';
 import 'package:mvvm/view_model/user_view_model.dart';
 import 'package:mvvm/view_model/welcome_view_model.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +38,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
         ChangeNotifierProvider(create: (_) => DashboardViewModel()),
         ChangeNotifierProvider(create: (_) => ProfileViewModel()),
+        ChangeNotifierProvider(create: (_) => ServiceListViewModel()),
+        ChangeNotifierProvider(create: (_) => UserPostViewModel()  ),
       ],
     child: MaterialApp(
       title: 'Flutter Demo',

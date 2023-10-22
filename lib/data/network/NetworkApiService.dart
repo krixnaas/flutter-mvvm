@@ -12,7 +12,21 @@ class NetworkApiService extends BaseApiServices {
     dynamic responseJson;
     try {
       final response =
-          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
+          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 1000));
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+    return responseJson;
+  }
+  @override
+  Future getGetApiResponseWithToken(String url, {String? token}) async {
+    dynamic responseJson;
+    try {
+      final response =
+      await http.get(Uri.parse(url), headers: {
+        'Authorization': 'Bearer $token',
+      }).timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
@@ -24,8 +38,25 @@ class NetworkApiService extends BaseApiServices {
   Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
     try {
-      Response response = await post(Uri.parse(url), body: data)
+      Response response = await post(Uri.parse(url),
+          body: data)
           .timeout(const Duration(seconds: 10));
+      print(response.body);
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw FetchDataException('No Internet Connection');
+    }
+    return responseJson;
+  }
+
+  @override
+  Future getPostApiResponseWithToken(String url, dynamic data, {String? token}) async {
+    dynamic responseJson;
+    try {
+      Response response = await http.post(Uri.parse(url), headers: {
+        'Authorization': 'Bearer $token',
+      }, body: data).timeout(const Duration(seconds: 10));
+      print(response.body);
       responseJson = returnResponse(response);
     } on SocketException {
       throw FetchDataException('No Internet Connection');
@@ -36,6 +67,7 @@ class NetworkApiService extends BaseApiServices {
   dynamic returnResponse(http.Response response) {
     switch (response.statusCode) {
       case 200:
+      case 201:
         dynamic responseJson = jsonDecode(response.body);
         return responseJson;
       case 400:
