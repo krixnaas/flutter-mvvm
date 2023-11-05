@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 
-class DashboardViewModel with ChangeNotifier {
-
-}
+class DashboardViewModel extends GetxController {}

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mvvm/res/image_strings.dart';
 import 'package:mvvm/res/sizes.dart';
 import 'package:mvvm/res/text_strings.dart';
 import 'package:mvvm/utils/routes/routes_name.dart';
+import 'package:mvvm/view/forgotpassword/widgets/reset_password_button_widget.dart';
+import 'package:mvvm/view_model/forgot_password_view_model.dart';
 import 'package:mvvm/view_model/services/forgot_password_services.dart';
 
 class ForgotPasswordMailView extends StatefulWidget {
@@ -13,28 +16,19 @@ class ForgotPasswordMailView extends StatefulWidget {
 }
 
 class _ForgotPasswordMailViewState extends State<ForgotPasswordMailView> {
-  bool animate=false;
+  final forgotPasswordViewModel = Get.put(ForgotPasswordViewModel());
+  final _formKey = GlobalKey<FormState>();
   ForgotPasswordServices forgotPasswordServices = ForgotPasswordServices();
-  TextEditingController _emailController = TextEditingController();
-
-  FocusNode emailFocusNode = FocusNode();
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-
-    _emailController.dispose();
   }
-    @override
+
+  @override
   void initState() {
-    // TODO: implement initState
+    forgotPasswordViewModel.idController.value.clear();
     super.initState();
-    forgotPasswordServices.startAnimate().then((value) {
-      setState(() {
-        animate = value; // Update the local animate variable in the widget's state
-      });
-    });
   }
 
   @override
@@ -45,54 +39,73 @@ class _ForgotPasswordMailViewState extends State<ForgotPasswordMailView> {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(tDefaultSize),
+            padding: const EdgeInsets.all(tDefaultSize),
             child: Column(
               children: [
-                AnimatedPositioned(
-                  top: animate ? 0 : -30,
-                  left: animate ? 0 : -30,
-                  duration: const Duration(milliseconds: 1600),
-                  child:Image(image:AssetImage(forgotPasswordImage), height: height * 0.3,),
+                SizedBox(
+                  child: Image(
+                    image: const AssetImage(forgotPasswordImage),
+                    height: height * 0.2,
+                  ),
                 ),
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 1600),
-                  top: 20,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 1600),
-                    opacity: animate ? 1 : 0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          forgotPasswordPage,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.displaySmall,
-                        ),
-                        Text(forgetEmailSubtitle,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleLarge),
-                      ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      forgotPasswordPage,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                    Text(forgetEmailSubtitle,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge),
+                  ],
+                ),
+                const SizedBox(
+                  height: tFormHeightSize - 10,
+                ),
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: forgotPasswordViewModel.idController.value,
+                    focusNode: forgotPasswordViewModel.idFoucsNode.value,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      hintText: emailHint,
+                      labelText: emailHint,
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.alternate_email),
                     ),
                   ),
                 ),
-                SizedBox(height: tFormHeightSize-10,),
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    hintText: emailHint,
-                    labelText: emailHint,
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.alternate_email),
-                  ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                      onPressed: () {
+                        Get.toNamed(RoutesName.forgotpasswordphone);
+                      },
+                      child: const Text(retriveByPhone)),
                 ),
-                SizedBox(height: tFormHeightSize-10,),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      onPressed: (){
-                        Navigator.pushNamed(context, RoutesName.otp);
-                      }, child: const Text(next))),
+                ResetPasswordButtonWidget(
+                  formKey: _formKey,
+                ),
+                const SizedBox(
+                  height: tFormHeightSize,
+                ),
+                TextButton(
+                    onPressed: () {
+                      Get.toNamed(RoutesName.login);
+                    },
+                    child: Text.rich(
+                      TextSpan(
+                          text: rememberPassword,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          children: const [
+                            TextSpan(
+                                text: login,
+                                style: TextStyle(color: Colors.blue))
+                          ]),
+                    ))
               ],
             ),
           ),

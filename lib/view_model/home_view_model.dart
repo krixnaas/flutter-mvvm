@@ -1,37 +1,36 @@
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:mvvm/data/response/api_response.dart';
 import 'package:mvvm/model/carousel_model.dart';
 import 'package:mvvm/model/movies_model.dart';
 import 'package:mvvm/repository/home_repository.dart';
 
-class HomeViewModel with ChangeNotifier{
+class HomeViewModel extends GetxController {
   List<MovieListModel> carouselItems = [];
   final _myRepo = HomeRepository();
   ApiResponse<MovieListModel> moviesList = ApiResponse.loading();
   ApiResponse<BannerListModel> bannerList = ApiResponse.loading();
 
-  setMoviesList(ApiResponse<MovieListModel> response){
+  setMoviesList(ApiResponse<MovieListModel> response) {
     moviesList = response;
-    notifyListeners();
   }
 
-  setBannersList(ApiResponse<BannerListModel> response2){
+  setBannersList(ApiResponse<BannerListModel> response2) {
     bannerList = response2;
-    notifyListeners();
   }
 
-  Future<void> fetchBannerListApi() async{
-    _myRepo.bannerListApi().then((value){
+  Future<void> fetchBannerListApi() async {
+    _myRepo.bannerListApi().then((value) {
       setBannersList(ApiResponse.completed(value));
-    }).onError((error, stackTrace){
+    }).onError((error, stackTrace) {
       setBannersList(ApiResponse.error(error.toString()));
     });
   }
 
-  Future<void> fetchMovieListApi() async{
-    _myRepo.movieListApi().then((value){
+  Future<void> fetchMovieListApi() async {
+    _myRepo.movieListApi().then((value) {
       setMoviesList(ApiResponse.completed(value));
-    }).onError((error, stackTrace){
+    }).onError((error, stackTrace) {
       setMoviesList(ApiResponse.error(error.toString()));
     });
   }
@@ -42,6 +41,5 @@ class HomeViewModel with ChangeNotifier{
 
   void setIndex(int index) {
     _selectedIndex = index;
-    notifyListeners();
   }
 }

@@ -1,4 +1,3 @@
-
 const String tSplashTopIcon = "assets/images/splash_top.png";
 const String tSplashImage = "assets/images/splash1.png";
 const String tSplashCircle = "assets/images/yellow-circle.png";
@@ -11,6 +10,7 @@ const String onBoarding4 = "assets/images/on_boarding/on_boarding4.png";
 
 //Welcome
 const String welcomeTop = "assets/images/welcome_top.png";
+const String successTop = "assets/images/success.png";
 
 //Login
 const String googleLogoImage = "assets/images/google_logo.png";

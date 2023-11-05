@@ -7,10 +7,14 @@ const String onBoardingTitle1 = "Build Apps";
 const String onBoardingTitle2 = "Learn Free From YT";
 const String onBoardingTitle3 = "Code & Resource";
 const String onBoardingTitle4 = "Available Now";
-const String onBoardingSubTitle1 = "Let's start your journey with us on this amazing and easy";
-const String onBoardingSubTitle2 = "Get Video Tutorials of each topic to learn things easily.";
-const String onBoardingSubTitle3 = "Save time by just copy and pasting complete apps learn";
-const String onBoardingSubTitle4 = "Save time by just copy and pasting complete apps learn";
+const String onBoardingSubTitle1 =
+    "Let's start your journey with us on this amazing and easy";
+const String onBoardingSubTitle2 =
+    "Get Video Tutorials of each topic to learn things easily.";
+const String onBoardingSubTitle3 =
+    "Save time by just copy and pasting complete apps learn";
+const String onBoardingSubTitle4 =
+    "Save time by just copy and pasting complete apps learn";
 const String onBoardingCounter1 = "1/4";
 const String onBoardingCounter2 = "2/4";
 const String onBoardingCounter3 = "3/4";
@@ -18,7 +22,8 @@ const String onBoardingCounter4 = "4/4";
 
 //-- Welcome View
 const String welcomeTitle = "Build Awesome Apps";
-const String welcomeSubtitle = "Let's put your creativity on the development highway, craft apps that everyone love.";
+const String welcomeSubtitle =
+    "Let's put your creativity on the development highway, craft apps that everyone love.";
 const String login = "Login";
 const String signUp = "Sign Up";
 
@@ -28,34 +33,44 @@ const String loginSubtitle = "Make it work, make it right, make it fast.";
 const String emailHint = "Email";
 const String passwordHint = "Password";
 const String forgotPassword = "Forgot Password?";
+const String rememberMe = "Remember Me?";
+
 const String or = "OR";
 const String noAccount = "Don't have an account? ";
 const String googleAccount = "Sign-in with Google";
 
 //-- Signup View
 const String signUpTitle = "Get On Board";
-const String signUpSubtitle = "Create your profile to start your Journey with us...";
+const String signUpSubtitle =
+    "Create your profile to start your Journey with us...";
 const String alreadyHaveAnAccount = "Already have an Account? ";
-const String nameHint = "Full Name";
+const String firstNameHint = "First Name";
+const String lastNameHint = "Last Name";
 const String phoneHint = "Phone";
+const String registrationSuccess = "Registration Success!";
 
 //-- Forgot Password View Text
-const String forgotPasswordTitle = "Make Selectikon!";
-const String forgotPasswordSubtitle = "Select one of the options given below to reset your password.";
+const String forgotPasswordTitle = "Make Selection!";
+const String forgotPasswordSubtitle =
+    "Select one of the options given below to reset your password.";
 const String resetViaEmail = "Reset via E-mail Verification";
 const String resetViaPhone = "Reset via Phone Verification";
 const String forgotPasswordPage = "Forgot Password";
 const String next = "Next";
 
 //-- Forgot Password Via Phone
-const String forgetPhoneSubtitle = "Enter your registered Phone No to receive OTP";
-
+const String forgetPhoneSubtitle =
+    "Enter your registered Phone No to receive OTP";
+const String retriveByEmail = "Retrive By Email";
+const String retriveByPhone = "Retrive By Phone Number";
+const String rememberPassword = "Remember Password? ";
 //-- Forgot Password Via Email
 const String forgetEmailSubtitle = "Enter your registered Email to receive OTP";
 
 //-- OTP View
 const String otpTitle = "CO\nDE";
 const String otpSubtitle = "Verification";
+const String signUpOtpSubtitle = "New Email Verification";
 const String otpMessage = "Enter the verification code sent at ";
 
 // -- Dashboard View - Text
@@ -70,10 +85,9 @@ const String dashboardTopCourses = "Top Courses";
 
 // -- Profile View - Text
 const String profile = "Profile";
-const String editProfile = "Edit Profile";
+const String addPhone = "Add Phone No.";
+const String updateProfile = "Update Profile";
 const String logoutDialogHeading = "Logout";
-const String profileHeading = "I Think So";
-const String profileSubHeading = "superadmin@ithinkso.com";
 
 // -- Menu
 const String menu1 = "Settings";
@@ -82,6 +96,10 @@ const String menu3 = "Billing Details";
 const String menu4 = "User Management";
 
 // -- Update Profile View - Text
-const String delete = "Delete";
 const String joined = "Joined";
-const String joinedAt = " 31 October 2023";
+
+// -- Reset Password View - Text
+const String resetPasswordTitle = "Lets Get You,";
+const String resetPasswordSubTitle = "Back on Track!";
+const String passwordConfirmation = "Password Confirmation";
+const String resetButtonText = "Reset Password";
